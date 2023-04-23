@@ -9,7 +9,9 @@ def new_deck():
     for suit in "SDCH":
         for face in ['A','2','3','4','5','6','7','8','9','10','J','Q','K']:
             deck.append(face+'_'+suit)
-    return deck
+    
+    random.shuffle(deck)
+    return deck 
 
 def value(hand):
     total = 0
@@ -28,12 +30,19 @@ def value(hand):
     
 
 def new_game():
-    return {
+    game = {
         "deck" : new_deck(),
         "playerTurn": "True",
-        "playerHand": [],
-        "dealerHand": []
+        "playerHand": None,
+        "dealerHand": None,
+        "gameOver" : False,
+        "result" : -1
     }
+
+    game["playerHand"] = []
+    game["dealerHand"] = []
+
+    return game
 
 
 def deal(game_id, hand):
@@ -55,17 +64,33 @@ def create_new_game():
     return game_id
 
 def update(game_id, action):
+    if not games[game_id]["gameOver"]:
+        #1 - Hit
+        if action == 1:
+            deal(game_id, "playerHand")
+            if (value(games[game_id]["playerHand"]) > 21):
+                games[game_id]["gameOver"] = True
+                games[game_id]["result"] = 0
+                
 
-    #0 - Start Game
-    if action == 0:
-        if len(games[game_id]["playerHand"]) == 0:
-            start_game(game_id)
+        #0 - Stand
+        if action == 2:
+            while value(games[game_id]["dealerHand"]) < 17:
+                deal(game_id, "dealerHand")
 
-    #1 - Hit
-    if action == 1:
-        deal(game_id, "playerHand")
+            if (value(games[game_id]["dealerHand"]) > 21):
+                games[game_id]["gameOver"] = True
+                games[game_id]["result"] = 1
 
-    #2 - Stand
-    if action == 2:
-        while value(games[game_id]["dealerHand"]) < 17:
-            deal(game_id, "dealerHand")
+            elif value(games[game_id]["dealerHand"]) == value(games[game_id]["playerHand"]):
+                games[game_id]["gameOver"] = True
+                games[game_id]["result"] = 2
+            elif value(games[game_id]["dealerHand"]) > value(games[game_id]["playerHand"]):
+                games[game_id]["gameOver"] = True
+                games[game_id]["result"] = 0
+
+            elif value(games[game_id]["dealerHand"]) < value(games[game_id]["playerHand"]):
+                games[game_id]["gameOver"] = True
+                games[game_id]["result"] = 1
+
+            return game_id

@@ -1,9 +1,10 @@
 from markupsafe import escape
 from flask import Flask, request
 from blackjack import *
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 a = create_new_game()
 
 @app.route('/')
@@ -15,7 +16,7 @@ def hello():
     return f'Hello, World {start_game(a)} {games}'
 
 
-@app.route('/create_game')
+@app.route('/create_game', methods = ['POST'])
 def create_game():
     game_id = create_new_game()
     start_game(game_id)
