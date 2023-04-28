@@ -68,26 +68,41 @@ function App() {
         <div className="nav-item">Game Id: {gameId ? gameId : "None"}</div>
 
       </nav>
-
-      <div>Dealer: {game ? game.gameOver ? game.dealerHand.join(' ') : `${game.dealerHand[0]} ${"? ".repeat(game.dealerHand.length - 1)}` : 0}</div>
-
-      <div>Player: {game ? value(game.playerHand) : 0}</div>
-
-      <div>Player: {game ? 
-      game.playerHand.map((card, index) => {
-        return <Card key={index} card={card}></Card>
-      })
-      
-      : 0}</div>
-
-
-      <div>{game ? game.gameOver ? result[game.result] : '' : ''}</div>
       <div>
 
-      <button className="btn btn-primary w-50" onClick={() => createGame()}>Create Game</button>
-      <button className="btn btn-danger w-25" onClick={() => play(gameId, 1)} disabled={game ? game.gameOver ? true : false : true} >Hit</button>
-      <button className="btn btn-info w-25" onClick={() => play(gameId, 2)} disabled={game ? game.gameOver ? true : false : true} >Stand</button>
+      <div>Dealer: {game ? game.gameOver ? game.dealerHand.join(' ') : `${game.dealerHand[0]}${" ?".repeat(game.dealerHand.length - 1)}` : 0}</div>
+      <div className='cards'>{game ? game.gameOver ?
+        game.dealerHand.map((card, index) => {
+          return <Card key={index} card={card}></Card>
+        })
+        
+        : `${game.dealerHand[0]}${" ?".repeat(game.dealerHand.length - 1)}`.split(' ').map((card, index) => {
+          return <Card key={index} card={card}></Card>
+        }) : 0}
       </div>
+        </div>
+      <div>
+
+      <div>Player: {game ? value(game.playerHand) : 0}</div>
+      {/* <div>Player:</div> */}
+      <div className='cards'>{game ?
+        game.playerHand.map((card, index) => {
+          return <Card key={index} card={card}></Card>
+        }) : 0}
+      </div>
+      </div>
+
+
+      <h1 className='result'>
+        {game ? game.gameOver ? result[game.result] : '' : ''}
+      </h1>
+      <div>
+
+        <button className="btn btn-primary w-50" onClick={() => createGame()}>Create Game</button>
+        <button className="btn btn-danger w-25" onClick={() => play(gameId, 1)} disabled={game ? game.gameOver ? true : false : true} >Hit</button>
+        <button className="btn btn-info w-25" onClick={() => play(gameId, 2)} disabled={game ? game.gameOver ? true : false : true} >Stand</button>
+      </div>
+      <div></div>
 
     </div>
   );

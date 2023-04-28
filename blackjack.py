@@ -57,9 +57,9 @@ def start_game(game_id):
             deal(game_id, "dealerHand")
 
 def create_new_game():
-    game_id = random.randint(0,10000)
-    while game_id in games.keys():
-        game_id = random.randint(0,10000)
+    game_id = random.randint(0,1000)
+    # while game_id in games.keys():
+    #     game_id = random.randint(0,10000)
     games[game_id] = new_game()
     return game_id
 

@@ -1,2 +1,4 @@
 venv
 .gitignore
+.mong.py
+blackjack-frontend-react/node_modules
